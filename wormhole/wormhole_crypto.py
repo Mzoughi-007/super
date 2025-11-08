@@ -10,7 +10,6 @@ def load_key():
         return f.read()
 
 
-# Generate and save Fernet key
 def generate_key():
     key = Fernet.generate_key()
     with open("shared.key", "wb") as f:
@@ -18,14 +17,12 @@ def generate_key():
     return key
 
 
-# Encrypt and decrypt
 def encrypt(data: bytes, key: bytes) -> bytes:
     return Fernet(key).encrypt(data)
 
 def decrypt(data: bytes, key: bytes) -> bytes:
     return Fernet(key).decrypt(data)
 
-# ECC encode/decode
 def encode_rs(data: bytes) -> bytes:
     rs = reedsolo.RSCodec(10)
     return rs.encode(data)
@@ -37,7 +34,6 @@ def decode_rs(data: bytes) -> bytes:
         return decoded[0]  # extract the data part
     return decoded
 
-# Bit flip simulation
 def flip_bits(data: bytes, flip_rate=0.01) -> bytes:
     flipped = bytearray(data)
     for i in range(len(flipped)):
@@ -46,7 +42,6 @@ def flip_bits(data: bytes, flip_rate=0.01) -> bytes:
                 flipped[i] ^= 1 << bit
     return bytes(flipped)
 
-# Hash validation
 def hash_payload(payload: bytes) -> str:
     return hashlib.sha256(payload).hexdigest()
 

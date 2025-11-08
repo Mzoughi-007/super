@@ -31,7 +31,6 @@ def run_option(files, interactive=False):
             console.print(f"🚀 Launching: [bold magenta]{f}[/bold magenta]", style="bright_cyan")
             console.print("="*60 + "\n", style="bright_blue")
 
-            # Run the first two scripts in background
             if "COSMIC_BIT_FLIP" in f and idx < 2:
                 p = subprocess.Popen(["python3", f])
                 procs.append(p)
@@ -39,7 +38,6 @@ def run_option(files, interactive=False):
                 time.sleep(0.3)
                 continue
 
-            # Run earth.py interactively
             if interactive and "earth.py" in f:
                 p = subprocess.Popen(
                     ["python3", f],
@@ -56,18 +54,15 @@ def run_option(files, interactive=False):
                         p.stdin.write(cmd + "\n")
                         p.stdin.flush()
 
-                        # Read all available output from earth.py
                         while True:
                             line = p.stdout.readline()
                             if not line:
                                 break
                             console.print(f"[cyan]{line.strip()}[/cyan]")
 
-                    # Close stdin and wait for earth.py to exit
                     p.stdin.close()
                     p.wait()
 
-                    # Print any remaining stdout
                     for line in p.stdout:
                         console.print(f"[cyan]{line.strip()}[/cyan]")
                     for line in p.stderr:
@@ -76,7 +71,6 @@ def run_option(files, interactive=False):
                 except KeyboardInterrupt:
                     p.terminate()
             else:
-                # Non-interactive scripts (other options)
                 p = subprocess.Popen(["python3", f])
                 p.wait()
 
@@ -86,7 +80,6 @@ def run_option(files, interactive=False):
             time.sleep(0.2)
 
     finally:
-        # Terminate background processes
         for p in procs:
             if p.poll() is None:
                 p.terminate()
@@ -116,7 +109,6 @@ def main():
         option_name = options[choice][0]
         console.print(Panel.fit(f"✨ Running [bold magenta]{option_name}[/bold magenta] demo ✨", style="bright_blue"))
 
-        # Interactive only for earth.py in option 5 or 6
         interactive = False
         if choice in ["5", "6"]:
             interactive = True

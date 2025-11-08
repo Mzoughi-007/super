@@ -25,5 +25,5 @@ while True:
         corrupted_once = True
         print("Corrupted message (2 bits flipped)")
     send_sock.sendto(message, (CORRUPTION_IP, CORRUPTION_PORT))
-    break  # only process one message
+    break 
 
